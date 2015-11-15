@@ -6,7 +6,7 @@ class Config:
     """ Base configuration with values used in all configurations. """
 
     SERVER_NAME = "localhost:5000"
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = os.getenv("MYDICTIONARY_SECRET_KEY")
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
@@ -21,7 +21,8 @@ class DevelopmentConfig(Config):
     """
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv("DEV_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.getenv("MYDICTIONARY_DEV_DATABASE_URL") or \
+                              "sqlite:///" + os.path.join(basedir, "dev_database.sqlite")
 
 
 class TestingConfig(Config):
@@ -34,7 +35,8 @@ class TestingConfig(Config):
     """
 
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.getenv("TEST_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.getenv("MYDICTIONARY_TEST_DATABASE_URL") or \
+                              "sqlite:///" + os.path.join(basedir, "test_database.sqlite")
 
 
 config = {
