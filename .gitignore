@@ -1,4 +1,11 @@
+# PyCharm
 app/__pycache__/
 __pycache__/
 .idea/
+
+# Coverage, etc.
 tmp/
+
+# Databases
+dev_database.sqlite
+test_database.sqlite
