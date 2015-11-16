@@ -8,7 +8,7 @@ from config import config
 db = SQLAlchemy()
 oa = OAuth()
 lm = LoginManager()
-lm.login_view = "views.login"
+lm.login_view = "main.login"
 
 from app.models import User
 
@@ -25,9 +25,9 @@ def create_app(config_name):
     lm.init_app(app)
     oa.init_app(app)
 
-    from app.views import views
+    from app.views.main import main
     from app.views.oauth import oauth
-    app.register_blueprint(views)
+    app.register_blueprint(main)
     app.register_blueprint(oauth)
 
     return app

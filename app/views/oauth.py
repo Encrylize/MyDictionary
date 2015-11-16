@@ -49,4 +49,4 @@ def callback():
         db.session.commit()
 
     login_user(user, True)
-    return redirect(url_for("views.index"))
+    return redirect(url_for("main.index"))
