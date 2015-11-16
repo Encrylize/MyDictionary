@@ -6,7 +6,7 @@ from flask_oauthlib.client import OAuth
 from config import config
 
 db = SQLAlchemy()
-oauth = OAuth()
+oa = OAuth()
 lm = LoginManager()
 lm.login_view = "views.login"
 
@@ -23,7 +23,7 @@ def create_app(config_name):
 
     db.init_app(app)
     lm.init_app(app)
-    oauth.init_app(app)
+    oa.init_app(app)
 
     from app.views import views
     app.register_blueprint(views)
