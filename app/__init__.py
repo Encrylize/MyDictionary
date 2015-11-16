@@ -26,6 +26,8 @@ def create_app(config_name):
     oa.init_app(app)
 
     from app.views import views
+    from app.oauth import oauth
     app.register_blueprint(views)
+    app.register_blueprint(oauth)
 
     return app
