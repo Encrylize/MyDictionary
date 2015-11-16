@@ -1,7 +1,4 @@
 import unittest
-import os, sys
-
-sys.path.append(os.path.join(os.path.dirname(__file__), "..\\"))
 
 from app import create_app, db
 from app.utils import get_or_create
