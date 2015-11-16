@@ -1,10 +1,11 @@
-from flask import Blueprint, session, url_for, request, redirect
+from flask import Blueprint, session, url_for, request, redirect, flash
 from flask_login import login_user
 from flask_oauthlib.client import OAuthException
 import os
 
 from app import oa, db
 from app.models import User
+from app.utils import get_or_create
 
 oauth = Blueprint("oauth", __name__)
 facebook = oa.remote_app(
@@ -41,10 +42,9 @@ def callback():
 
     session["oauth_token"] = (resp["access_token"], "")
     me = facebook.get("/me")
-
-    user = User.query.filter_by(social_id=me.data.get("id")).first()
-    if user is None:
-        user = User(social_id=me.data.get("id"), name=me.data.get("name"))
+    user, created = get_or_create(User, social_id=me.data.get("id"))
+    if created is None:
+        user.name = me.data.get("name")
         db.session.add(user)
         db.session.commit()
 
