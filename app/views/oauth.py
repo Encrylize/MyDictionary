@@ -34,11 +34,11 @@ def authorize():
 def callback():
     resp = facebook.authorized_response()
     if resp is None:
-        return "Access denied: Reason: %s, error: %s" % (
+        flash("Access denied: Reason: %s, error: %s" % (
             request.args["error_reason"], request.args["error_description"]
-        )
+        ), "error")
     elif isinstance(resp, OAuthException):
-        return "Access denied: %s" % resp.message
+        flash("Access denied: %s" % resp.message, "error")
 
     session["oauth_token"] = (resp["access_token"], "")
     me = facebook.get("/me")
