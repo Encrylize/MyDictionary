@@ -20,7 +20,6 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('social_id', sa.String(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.Column('email', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('social_id')
     )
