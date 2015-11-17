@@ -43,7 +43,7 @@ def callback():
     session["oauth_token"] = (resp["access_token"], "")
     me = facebook.get("/me")
     user, created = get_or_create(User, social_id=me.data.get("id"))
-    if created is None:
+    if created:
         user.name = me.data.get("name")
         db.session.add(user)
         db.session.commit()
