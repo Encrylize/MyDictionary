@@ -10,6 +10,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String())
     dictionary = db.relationship("Dictionary", backref="creator", uselist=False, cascade="all, delete-orphan")
 
+    def __init__(self, **kwargs):
+        """ Initializes the user and creates their dictionary. """
+        super().__init__(**kwargs)
+        self.dictionary = Dictionary(creator=self)
+
     def __repr__(self):
         return "<User ID: %r, social_id: %r, name: %r, email: %r>" % (self.id, self.social_id, self.name, self.email)
 

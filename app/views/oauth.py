@@ -45,9 +45,7 @@ def callback():
     user, created = get_or_create(User, social_id=me.data.get("id"))
     if created:
         user.name = me.data.get("name")
-        dictionary = Dictionary(creator=user)
         db.session.add(user)
-        db.session.add(dictionary)
         db.session.commit()
 
     login_user(user, True)
