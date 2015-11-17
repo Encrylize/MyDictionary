@@ -22,6 +22,6 @@ class TestUtils(unittest.TestCase):
         db.session.add(user1)
         db.session.commit()
         user2, created2 = get_or_create(User, name="foo", social_id="bar")
-        assert created1
-        assert not created2
-        assert user1 == user2
+        self.assertTrue(created1)
+        self.assertFalse(created2)
+        self.assertEquals(user1, user2)
