@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 
 from app import db
+from app.forms import NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
 
 
 class User(UserMixin, db.Model):
@@ -72,36 +73,48 @@ class Word(db.Model):
 
 
 class Noun(Word):
+    form = NounForm
+
     __mapper_args__ = {
         "polymorphic_identity": "noun"
     }
 
 
 class Verb(Word):
+    form = VerbForm
+
     __mapper_args__ = {
         "polymorphic_identity": "verb"
     }
 
 
 class Adjective(Word):
+    form = AdjectiveForm
+
     __mapper_args__ = {
         "polymorphic_identity": "adjective"
     }
 
 
 class Adverb(Word):
+    form = AdverbForm
+
     __mapper_args__ = {
         "polymorphic_identity": "adverb"
     }
 
 
 class Conjunction(Word):
+    form = ConjunctionForm
+
     __mapper_args__ = {
         "polymorphic_identity": "conjunction"
     }
 
 
 class Preposition(Word):
+    form = PrepositionForm
+
     __mapper_args__ = {
         "polymorphic_identity": "preposition"
     }
