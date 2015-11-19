@@ -1,7 +1,7 @@
 import unittest
 
 from app import create_app, db
-from app.utils import get_or_create, is_safe_url
+from app.utils import get_or_create, is_safe_url, get_redirect_target
 from app.models import User
 
 
@@ -31,3 +31,10 @@ class TestUtils(unittest.TestCase):
             self.assertFalse(is_safe_url("http://externalsite.com"))
             self.assertTrue(is_safe_url("http://" + self.app.config["SERVER_NAME"]))
             self.assertTrue(is_safe_url("safe_internal_link"))
+
+    def test_get_redirect_target(self):
+        with self.app.test_request_context("/?next=http://externalsite.com"):
+            self.assertIsNone(get_redirect_target())
+
+        with self.app.test_request_context("/?next=safe_internal_link"):
+            self.assertEquals(get_redirect_target(), "safe_internal_link")
