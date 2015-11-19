@@ -1,7 +1,7 @@
 import unittest
 
 from app import create_app, db
-from app.utils import get_or_create
+from app.utils import get_or_create, is_safe_url
 from app.models import User
 
 
@@ -25,3 +25,9 @@ class TestUtils(unittest.TestCase):
         self.assertTrue(created1)
         self.assertFalse(created2)
         self.assertEquals(user1, user2)
+
+    def test_is_safe_url(self):
+        with self.app.test_request_context():
+            self.assertFalse(is_safe_url("http://externalsite.com"))
+            self.assertTrue(is_safe_url("http://" + self.app.config["SERVER_NAME"]))
+            self.assertTrue(is_safe_url("safe_internal_link"))
