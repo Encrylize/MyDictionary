@@ -69,8 +69,8 @@ class Word(db.Model):
     }
 
     def __repr__(self):
-        return "<%s>" % "".join(["%s: %s " % (column, getattr(self, column)) for column in self.__table__.columns._data
-                                 if getattr(self, column) is not None])[:-1]
+        return "<%s>" % "".join(["%s: %s, " % (column, getattr(self, column)) for column in self.__table__.columns._data
+                                 if getattr(self, column) is not None])[:-2]
 
 
 class Noun(Word):
