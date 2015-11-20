@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
 class Dictionary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    words = db.relationship("Word", backref="dictionary", lazy="dynamic", cascade="all, delete-orphan")
 
     def __repr__(self):
         return "<Dictionary ID: %d, user_id: %d>" % (self.id, self.user_id)
