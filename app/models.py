@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from collections import OrderedDict
 
 from app import db
 from app.forms import WordForm, NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
@@ -69,6 +70,22 @@ class Word(db.Model):
         "polymorphic_on": type
     }
 
+    @property
+    def header(self):
+        return ""
+
+    @property
+    def subheader(self):
+        return "%s. %s" % (self.type, self.meaning)
+
+    @property
+    def body(self):
+        return ""
+
+    @property
+    def footer(self):
+        return self.examples
+
     def __repr__(self):
         return "<%s>" % "".join(["%s: %s, " % (column, getattr(self, column)) for column in self.__table__.columns._data
                                  if getattr(self, column) is not None])[:-2]
@@ -81,6 +98,23 @@ class Noun(Word):
         "polymorphic_identity": "noun"
     }
 
+    @property
+    def header(self):
+        return self.singular
+
+    @property
+    def subheader(self):
+        return "%s, %s. %s" % (self.type, self.gender, self.meaning)
+
+    @property
+    def body(self):
+        return OrderedDict(
+            (
+                ("Singular", self.singular),
+                ("Plural", self.plural)
+            )
+        )
+
 
 class Verb(Word):
     form = VerbForm
@@ -88,6 +122,25 @@ class Verb(Word):
     __mapper_args__ = {
         "polymorphic_identity": "verb"
     }
+
+    @property
+    def header(self):
+        return self.infinitive
+
+    @property
+    def subheader(self):
+        return "%s, consonant change in 2nd/3rd person, singular. %s" % (self.type, self.meaning) \
+            if self.consonant_change else "%s. %s" % (self.type, self.meaning)
+
+    @property
+    def body(self):
+        return OrderedDict(
+            (
+                ("Infinitive", self.infinitive),
+                ("Past tense", self.past_tense),
+                ("Present perfect tense", self.present_perfect_tense)
+            )
+        )
 
 
 class Adjective(Word):
@@ -97,6 +150,20 @@ class Adjective(Word):
         "polymorphic_identity": "adjective"
     }
 
+    @property
+    def header(self):
+        return self.positive
+
+    @property
+    def body(self):
+        return OrderedDict(
+            (
+                ("Positive", self.positive),
+                ("Comparative", self.comparative),
+                ("Superlative", self.superlative)
+            )
+        )
+
 
 class Adverb(Word):
     form = AdverbForm
@@ -104,6 +171,10 @@ class Adverb(Word):
     __mapper_args__ = {
         "polymorphic_identity": "adverb"
     }
+
+    @property
+    def header(self):
+        return self.adverb
 
 
 class Conjunction(Word):
@@ -113,6 +184,10 @@ class Conjunction(Word):
         "polymorphic_identity": "conjunction"
     }
 
+    @property
+    def header(self):
+        return self.conjunction
+
 
 class Preposition(Word):
     form = PrepositionForm
@@ -120,3 +195,7 @@ class Preposition(Word):
     __mapper_args__ = {
         "polymorphic_identity": "preposition"
     }
+
+    @property
+    def header(self):
+        return self.preposition
