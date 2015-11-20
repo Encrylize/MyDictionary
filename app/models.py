@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 
 from app import db
-from app.forms import NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
+from app.forms import WordForm, NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
 
 
 class User(UserMixin, db.Model):
@@ -29,6 +29,14 @@ class Dictionary(db.Model):
 
 
 class Word(db.Model):
+    # General
+    id = db.Column(db.Integer, primary_key=True)
+    form = WordForm
+    meaning = db.Column(db.String())
+    examples = db.Column(db.String())
+    type = db.Column(db.String())
+    dictionary_id = db.Column(db.Integer, db.ForeignKey("dictionary.id"))
+
     # Noun
     singular = db.Column(db.String())
     plural = db.Column(db.String())
@@ -55,13 +63,6 @@ class Word(db.Model):
     preposition = db.Column(db.String())
     accusative = db.Column(db.Boolean())
     dative = db.Column(db.Boolean())
-
-    # General
-    id = db.Column(db.Integer, primary_key=True)
-    meaning = db.Column(db.String())
-    examples = db.Column(db.String())
-    type = db.Column(db.String())
-    dictionary_id = db.Column(db.Integer, db.ForeignKey("dictionary.id"))
 
     __mapper_args__ = {
         "polymorphic_identity": "word",
