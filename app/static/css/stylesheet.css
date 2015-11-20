@@ -2,3 +2,9 @@
     background-color: #3B5998;
     color: white;
 }
+
+.word-subheader {
+    padding-bottom: 0.5em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid grey;
+}
