@@ -31,4 +31,7 @@ def create_app(config_name):
     app.register_blueprint(main)
     app.register_blueprint(oauth)
 
+    from app.converters import WordClassConverter
+    app.url_map.converters["word_class"] = WordClassConverter
+
     return app
