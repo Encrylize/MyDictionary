@@ -26,12 +26,12 @@ def create_app(config_name):
     lm.init_app(app)
     oa.init_app(app)
 
+    from app.converters import WordClassConverter
+    app.url_map.converters["word_class"] = WordClassConverter
+
     from app.views.main import main
     from app.views.oauth import oauth
     app.register_blueprint(main)
     app.register_blueprint(oauth)
-
-    from app.converters import WordClassConverter
-    app.url_map.converters["word_class"] = WordClassConverter
 
     return app
