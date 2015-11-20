@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% from "macros.html" import render_words %}
 
 {% block content %}
 <div class="jumbotron">
   <div class="text-center">
-    <h3>Index</h3>
+    Index
   </div>
 </div>
+{{ render_words(g.user.dictionary.words) }}
 {% endblock %}
