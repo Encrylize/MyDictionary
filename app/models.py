@@ -80,7 +80,7 @@ class Word(db.Model):
 
     @property
     def body(self):
-        return ""
+        return {}
 
     @property
     def footer(self):
@@ -199,3 +199,14 @@ class Preposition(Word):
     @property
     def header(self):
         return self.preposition
+
+    @property
+    def subheader(self):
+        if self.accusative and self.dative:
+            return "%s, accusative/dative. %s" % (self.type, self.meaning)
+        elif self.accusative:
+            return "%s, accusative. %s" % (self.type, self.meaning)
+        elif self.dative:
+            return "%s, dative. %s" % (self.type, self.meaning)
+        else:
+            return super().subheader
