@@ -11,7 +11,7 @@ main = Blueprint("main", __name__)
 @main.route("/index")
 @login_required
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="Home")
 
 
 @main.route("/new/<word_class:word_class>", methods=["GET", "POST"])
@@ -30,7 +30,7 @@ def create_word(word_class):
         else:
             flash("An identical word already exists.", "error")
 
-    return render_template("form.html", form=form)
+    return render_template("form.html", title="New %s" % word_class.type.capitalize(), form=form)
 
 
 @main.route("/login")
@@ -38,7 +38,7 @@ def login():
     if g.user.is_authenticated:
         return redirect(url_for("main.index"))
 
-    return render_template("login.html")
+    return render_template("login.html", title="Log In")
 
 
 @main.route("/logout")
