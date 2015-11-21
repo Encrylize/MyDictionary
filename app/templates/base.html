@@ -25,6 +25,9 @@
             </button>
           </div>
           <div class="collapse navbar-collapse navHeaderCollapse">
+            <ul class="nav navbar-nav navbar-left">
+              <li><a data-toggle="modal" data-target="#wordClassSelector">Add Word</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ g.user.name }}<span class="caret"></span></a>
@@ -36,6 +39,26 @@
           </div>
         </div>
       </nav>
+
+      <div class="modal fade" id="wordClassSelector" tabindex="-1" role="dialog" aria-labelledby="label">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h3 class="modal-title text-center" id="label">Word Class</h3>
+            </div>
+            <div class="modal-body">
+              <div class="btn-group text-center">
+                <div class="row">
+                  {% for word_class in g.word_classes %}
+                    <a class="btn btn-primary col-xs-push-1 col-xs-10 word-class-btn" href="{{ url_for('main.create_word', word_class=word_class) }}">{{ word_class|capitalize }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endif %}
 
     <div class="container">

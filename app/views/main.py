@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, g, redirect, url_for, flash
 from flask_login import login_required, current_user, logout_user
 
 from app import db
+from app.models import Word
 from app.utils import get_or_create
 
 main = Blueprint("main", __name__)
@@ -51,3 +52,4 @@ def logout():
 @main.before_request
 def before_request():
     g.user = current_user
+    g.word_classes = [word_class.__mapper_args__["polymorphic_identity"] for word_class in Word.__subclasses__()]
