@@ -30,7 +30,7 @@ def create_word(word_class):
         else:
             flash("An identical word already exists.", "error")
 
-    return render_template("form.html", title="New %s" % word_class.type.capitalize(), form=form)
+    return render_template("form.html", title="New Word", form=form)
 
 
 @main.route("/login")
