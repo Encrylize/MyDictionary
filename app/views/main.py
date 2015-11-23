@@ -34,6 +34,17 @@ def create_word(word_class):
     return render_template("form.html", title="New Word", form=form)
 
 
+@main.route("/delete/<int:id>")
+@login_required
+def delete_word(id):
+    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
+    db.session.delete(word)
+    db.session.commit()
+    flash("Deleted word.", "warning")
+
+    return redirect(url_for("main.index"))
+
+
 @main.route("/login")
 def login():
     if g.user.is_authenticated:
@@ -53,3 +64,4 @@ def logout():
 def before_request():
     g.user = current_user
     g.word_classes = [word_class.__mapper_args__["polymorphic_identity"] for word_class in Word.__subclasses__()]
+    g.db = db
