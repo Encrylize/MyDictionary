@@ -13,13 +13,3 @@ class WordClassConverter(UnicodeConverter):
             return word_class
         except ValueError:
             raise ValidationError()
-
-
-class WordConverter(IntegerConverter):
-    """ Converts a valid Word ID into a Word object. """
-    def to_python(self, value):
-        word = Word.query.get(value)
-        if word is None or word.dictionary.creator != g.user:
-            raise ValidationError()
-        else:
-            return word

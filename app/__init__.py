@@ -26,9 +26,8 @@ def create_app(config_name):
     lm.init_app(app)
     oa.init_app(app)
 
-    from app.converters import WordClassConverter, WordConverter
+    from app.converters import WordClassConverter
     app.url_map.converters["word_class"] = WordClassConverter
-    app.url_map.converters["word"] = WordConverter
 
     from app.views.main import main
     from app.views.oauth import oauth
