@@ -89,4 +89,3 @@ def logout():
 def before_request():
     g.user = current_user
     g.word_classes = [word_class.__mapper_args__["polymorphic_identity"] for word_class in Word.__subclasses__()]
-    g.db = db
