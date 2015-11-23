@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, g, redirect, url_for, flash
 from flask_login import login_required, current_user, logout_user
+from sqlalchemy_utils import get_class_by_table
 
 from app import db
 from app.models import Word
@@ -32,6 +33,26 @@ def create_word(word_class):
             flash("An identical word already exists.", "error")
 
     return render_template("form.html", title="New Word", form=form)
+
+
+@main.route("/edit/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_word(id):
+    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
+    form = word.form(obj=word)
+
+    if form.validate_on_submit():
+        new_word = get_class_by_table(Word, Word.__table__, data={"type": word.type}).query.filter_by(
+           **{key: value for key, value in form.data.items() if key != "next"}).first()
+        if new_word is None:
+            form.populate_obj(word)
+            db.session.commit()
+            flash("Successfully edited word!", "success")
+            return form.redirect("index")
+        else:
+            flash("An identical word already exists.", "error")
+
+    return render_template("form.html", title="Edit Word", form=form)
 
 
 @main.route("/delete/<int:id>")
