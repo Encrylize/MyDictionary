@@ -14,7 +14,7 @@ main = Blueprint("main", __name__)
 @login_required
 def index(page=1):
     words = g.user.dictionary.words.paginate(page, current_app.config.get("WORDS_PER_PAGE"), False)
-    if not words.items:
+    if not words.items and page != 1:
         abort(404)
 
     return render_template("index.html", title="Home", words=words)
