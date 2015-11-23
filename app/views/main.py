@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, g, redirect, url_for, flash
+from flask import Blueprint, render_template, g, redirect, url_for, flash, current_app, abort
 from flask_login import login_required, current_user, logout_user
 from sqlalchemy_utils import get_class_by_table
 
@@ -8,12 +8,16 @@ from app.utils import get_or_create
 
 main = Blueprint("main", __name__)
 
-
 @main.route("/")
 @main.route("/index")
+@main.route("/index/<int:page>")
 @login_required
-def index():
-    return render_template("index.html", title="Home")
+def index(page=1):
+    words = g.user.dictionary.words.paginate(page, current_app.config.get("WORDS_PER_PAGE"), False)
+    if not words.items:
+        abort(404)
+
+    return render_template("index.html", title="Home", words=words)
 
 
 @main.route("/new/<word_class:word_class>", methods=["GET", "POST"])

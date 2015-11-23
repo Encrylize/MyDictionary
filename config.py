@@ -9,6 +9,7 @@ class Config:
     SECRET_KEY = os.getenv("MYDICTIONARY_SECRET_KEY")
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    WORDS_PER_PAGE = 20
 
 
 class DevelopmentConfig(Config):
@@ -23,6 +24,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv("MYDICTIONARY_DEV_DATABASE_URL") or \
                               "sqlite:///" + os.path.join(basedir, "dev_database.sqlite")
+    WORDS_PER_PAGE = 5
 
 
 class TestingConfig(Config):
