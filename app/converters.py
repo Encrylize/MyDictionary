@@ -1,6 +1,5 @@
-from werkzeug.routing import ValidationError, UnicodeConverter, IntegerConverter
+from werkzeug.routing import ValidationError, UnicodeConverter
 from sqlalchemy_utils import get_class_by_table
-from flask import g
 
 from app.models import Word
 
