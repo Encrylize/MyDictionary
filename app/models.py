@@ -1,11 +1,13 @@
-from flask_sqlalchemy import BaseQuery
-from sqlalchemy_utils import TSVectorType
-from sqlalchemy_searchable import SearchQueryMixin, make_searchable
-from flask_login import UserMixin
 from collections import OrderedDict
 
+from flask_login import UserMixin
+from flask_sqlalchemy import BaseQuery
+from sqlalchemy_searchable import SearchQueryMixin, make_searchable
+from sqlalchemy_utils import TSVectorType
+
 from app import db
-from app.forms import WordForm, NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
+from app.forms import (AdjectiveForm, AdverbForm, ConjunctionForm, NounForm,
+                       PrepositionForm, VerbForm, WordForm)
 
 make_searchable()
 

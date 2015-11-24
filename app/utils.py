@@ -1,4 +1,5 @@
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin, urlparse
+
 from flask import request
 
 

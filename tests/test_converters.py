@@ -1,9 +1,10 @@
 import unittest
+
 from werkzeug.routing import ValidationError
 
 from app import create_app, db
-from app.models import Noun, Verb
 from app.converters import WordClassConverter
+from app.models import Noun, Verb
 
 
 class TestUtils(unittest.TestCase):

@@ -1,9 +1,10 @@
-from flask import Blueprint, session, url_for, request, redirect, flash
-from flask_login import login_user
-from flask_oauthlib.client import OAuthException
 import os
 
-from app import oa, db
+from flask import Blueprint, flash, redirect, request, session, url_for
+from flask_login import login_user
+from flask_oauthlib.client import OAuthException
+
+from app import db, oa
 from app.models import User
 from app.utils import get_or_create
 

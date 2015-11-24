@@ -1,11 +1,12 @@
 import os
-import coverage
-from flask_script import Manager, Shell
-from flask_migrate import Migrate, MigrateCommand
 
-from config import basedir
+import coverage
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
+
 from app import create_app, db
-from app.models import User, Dictionary, Word
+from app.models import Dictionary, User, Word
+from config import basedir
 
 app = create_app(os.getenv("MYDICTIONARY_CONFIG") or "default")
 

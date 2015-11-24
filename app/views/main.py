@@ -1,11 +1,12 @@
-from flask import Blueprint, render_template, g, redirect, url_for, flash, current_app, abort
-from flask_login import login_required, current_user, logout_user
+from flask import (Blueprint, abort, current_app, flash, g, redirect,
+                   render_template, url_for)
+from flask_login import current_user, login_required, logout_user
 from sqlalchemy_utils import get_class_by_table
 
 from app import db
+from app.forms import SearchForm
 from app.models import Word
 from app.utils import get_or_create
-from app.forms import SearchForm
 
 main = Blueprint("main", __name__)
 

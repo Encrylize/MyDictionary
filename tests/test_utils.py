@@ -1,8 +1,8 @@
 import unittest
 
 from app import create_app, db
-from app.utils import get_or_create, is_safe_url, get_redirect_target
 from app.models import User
+from app.utils import get_or_create, get_redirect_target, is_safe_url
 
 
 class TestUtils(unittest.TestCase):

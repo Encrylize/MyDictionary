@@ -1,6 +1,7 @@
 from flask import redirect, url_for
 from flask_wtf import Form
-from wtforms import HiddenField, StringField, BooleanField, SelectField, TextAreaField
+from wtforms import (BooleanField, HiddenField, SelectField, StringField,
+                     TextAreaField)
 from wtforms.validators import DataRequired
 
 from app.utils import get_redirect_target, is_safe_url
