@@ -26,7 +26,7 @@ cov = coverage.coverage(branch=True, include='app/*')
 
 @manager.command
 def test(coverage=False):
-    ''' Run the unit tests. '''
+    """ Run the unit tests. """
     if coverage:
         cov.start()
 

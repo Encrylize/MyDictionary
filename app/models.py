@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
                                  cascade='all, delete-orphan')
 
     def __init__(self, **kwargs):
-        ''' Initializes the user and creates their dictionary. '''
+        """ Initializes the user and creates their dictionary. """
         super().__init__(**kwargs)
         self.dictionary = Dictionary(creator=self)
 

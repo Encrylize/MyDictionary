@@ -5,7 +5,7 @@ from app.models import Word
 
 
 class WordClassConverter(UnicodeConverter):
-    ''' Converts a word class string into a class. '''
+    """ Converts a word class string into a class. """
 
     def to_python(self, value):
         try:
