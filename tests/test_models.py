@@ -6,7 +6,7 @@ from app.models import User
 
 class TestUtils(unittest.TestCase):
     def setUp(self):
-        self.app = create_app("testing")
+        self.app = create_app('testing')
         self.app_ctx = self.app.app_context()
         self.app_ctx.push()
         db.create_all()
@@ -17,7 +17,7 @@ class TestUtils(unittest.TestCase):
         self.app_ctx.pop()
 
     def test_user_initialization(self):
-        user = User(name="foo", social_id="bar")
+        user = User(name='foo', social_id='bar')
         db.session.add(user)
         db.session.commit()
         dictionary = user.dictionary

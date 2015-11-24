@@ -8,7 +8,7 @@ from config import config
 db = SQLAlchemy()
 oa = OAuth()
 lm = LoginManager()
-lm.login_view = "main.login"
+lm.login_view = 'main.login'
 
 from app.models import User
 
@@ -27,7 +27,7 @@ def create_app(config_name):
     oa.init_app(app)
 
     from app.converters import WordClassConverter
-    app.url_map.converters["word_class"] = WordClassConverter
+    app.url_map.converters['word_class'] = WordClassConverter
 
     from app.views.main import main
     from app.views.oauth import oauth
