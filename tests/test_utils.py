@@ -29,7 +29,8 @@ class TestUtils(unittest.TestCase):
     def test_is_safe_url(self):
         with self.app.test_request_context():
             self.assertFalse(is_safe_url("http://externalsite.com"))
-            self.assertTrue(is_safe_url("http://" + self.app.config["SERVER_NAME"]))
+            self.assertTrue(is_safe_url("http://" + self.app.config[
+                "SERVER_NAME"]))
             self.assertTrue(is_safe_url("safe_internal_link"))
 
     def test_get_redirect_target(self):

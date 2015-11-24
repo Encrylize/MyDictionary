@@ -16,7 +16,10 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     social_id = db.Column(db.String(), nullable=False, unique=True)
     name = db.Column(db.String(), nullable=False)
-    dictionary = db.relationship("Dictionary", backref="creator", uselist=False, cascade="all, delete-orphan")
+    dictionary = db.relationship("Dictionary",
+                                 uselist=False,
+                                 backref="creator",
+                                 cascade="all, delete-orphan")
 
     def __init__(self, **kwargs):
         """ Initializes the user and creates their dictionary. """
@@ -24,13 +27,17 @@ class User(UserMixin, db.Model):
         self.dictionary = Dictionary(creator=self)
 
     def __repr__(self):
-        return "<User ID: %r, social_id: %r, name: %r>" % (self.id, self.social_id, self.name)
+        return "<User ID: %r, social_id: %r, name: %r>" % (
+            self.id, self.social_id, self.name)
 
 
 class Dictionary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    words = db.relationship("Word", backref="dictionary", lazy="dynamic", cascade="all, delete-orphan")
+    words = db.relationship("Word",
+                            lazy="dynamic",
+                            backref="dictionary",
+                            cascade="all, delete-orphan")
 
     def __repr__(self):
         return "<Dictionary ID: %d, user_id: %d>" % (self.id, self.user_id)
@@ -43,9 +50,10 @@ class WordQuery(BaseQuery, SearchQueryMixin):
 class Word(db.Model):
     # General
     query_class = WordQuery
-    search_vector = db.Column(TSVectorType("singular", "plural", "infinitive", "past_tense",
-                                           "present_perfect_tense", "positive", "comparative", "superlative",
-                                           "adverb", "conjunction", "preposition", "meaning", "examples"))
+    search_vector = db.Column(TSVectorType(
+        "singular", "plural", "infinitive", "past_tense",
+        "present_perfect_tense", "positive", "comparative", "superlative",
+        "adverb", "conjunction", "preposition", "meaning", "examples"))
 
     id = db.Column(db.Integer, primary_key=True)
     form = WordForm
@@ -81,10 +89,7 @@ class Word(db.Model):
     accusative = db.Column(db.Boolean())
     dative = db.Column(db.Boolean())
 
-    __mapper_args__ = {
-        "polymorphic_identity": "word",
-        "polymorphic_on": type
-    }
+    __mapper_args__ = {"polymorphic_identity": "word", "polymorphic_on": type}
 
     @property
     def header(self):
@@ -103,16 +108,15 @@ class Word(db.Model):
         return self.examples
 
     def __repr__(self):
-        return "<%s>" % "".join(["%s: %s, " % (column, getattr(self, column)) for column in self.__table__.columns._data
+        return "<%s>" % "".join(["%s: %s, " % (column, getattr(self, column))
+                                 for column in self.__table__.columns._data
                                  if getattr(self, column) is not None])[:-2]
 
 
 class Noun(Word):
     form = NounForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "noun"
-    }
+    __mapper_args__ = {"polymorphic_identity": "noun"}
 
     @property
     def header(self):
@@ -135,9 +139,7 @@ class Noun(Word):
 class Verb(Word):
     form = VerbForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "verb"
-    }
+    __mapper_args__ = {"polymorphic_identity": "verb"}
 
     @property
     def header(self):
@@ -145,8 +147,9 @@ class Verb(Word):
 
     @property
     def subheader(self):
-        return "%s, consonant change in 2nd/3rd person, singular. %s" % (self.type, self.meaning) \
-            if self.consonant_change else "%s. %s" % (self.type, self.meaning)
+        return "%s, consonant change in 2nd/3rd person, singular. %s" % (
+            self.type, self.meaning) if self.consonant_change else "%s. %s" % (
+                self.type, self.meaning)
 
     @property
     def body(self):
@@ -162,9 +165,7 @@ class Verb(Word):
 class Adjective(Word):
     form = AdjectiveForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "adjective"
-    }
+    __mapper_args__ = {"polymorphic_identity": "adjective"}
 
     @property
     def header(self):
@@ -184,9 +185,7 @@ class Adjective(Word):
 class Adverb(Word):
     form = AdverbForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "adverb"
-    }
+    __mapper_args__ = {"polymorphic_identity": "adverb"}
 
     @property
     def header(self):
@@ -196,9 +195,7 @@ class Adverb(Word):
 class Conjunction(Word):
     form = ConjunctionForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "conjunction"
-    }
+    __mapper_args__ = {"polymorphic_identity": "conjunction"}
 
     @property
     def header(self):
@@ -208,9 +205,7 @@ class Conjunction(Word):
 class Preposition(Word):
     form = PrepositionForm
 
-    __mapper_args__ = {
-        "polymorphic_identity": "preposition"
-    }
+    __mapper_args__ = {"polymorphic_identity": "preposition"}
 
     @property
     def header(self):

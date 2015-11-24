@@ -38,13 +38,16 @@ class WordForm(RedirectForm):
 class NounForm(WordForm):
     singular = StringField("Singular", [DataRequired()])
     plural = StringField("Plural", [DataRequired()])
-    gender = SelectField("Gender", choices=[("neuter", "neuter"), ("feminine", "feminine"), ("masculine", "masculine")])
+    gender = SelectField("Gender", choices=[("neuter", "neuter"),
+                                            ("feminine", "feminine"),
+                                            ("masculine", "masculine")])
 
 
 class VerbForm(WordForm):
     infinitive = StringField("Infinitive", [DataRequired()])
     past_tense = StringField("Past Tense", [DataRequired()])
-    present_perfect_tense = StringField("Present Perfect Tense", [DataRequired()])
+    present_perfect_tense = StringField("Present Perfect Tense",
+                                        [DataRequired()])
     consonant_change = BooleanField("Consonant Change - 2./3. pers. sgl.")
 
 
@@ -66,6 +69,7 @@ class PrepositionForm(WordForm):
     preposition = StringField("Preposition", [DataRequired()])
     accusative = BooleanField("Accusative")
     dative = BooleanField("Dative")
+
 
 WordForm.meaning = TextAreaField("Meaning", [DataRequired()])
 WordForm.examples = TextAreaField("Examples", [DataRequired()])
