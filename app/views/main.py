@@ -83,7 +83,7 @@ def search():
 @main.route("/search_results/<query>/<int:page>")
 @login_required
 def search_results(query, page=1):
-    words = None
+    words = Word.query.search(query).paginate(page, current_app.config.get("WORDS_PER_PAGE"), False)
     return render_template("search_results.html", title="Search Results", query=query, words=words)
 
 
