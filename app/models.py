@@ -1,8 +1,24 @@
+import os
+from ast import literal_eval
 from flask_login import UserMixin
 from collections import OrderedDict
 
 from app import db
 from app.forms import WordForm, NounForm, VerbForm, AdjectiveForm, AdverbForm, ConjunctionForm, PrepositionForm
+
+# Set this to False if you're not using PostgreSQL.
+ENABLE_SEARCH = literal_eval(os.getenv("MYDICTIONARY_ENABLE_SEARCH", "False"))
+
+if ENABLE_SEARCH:
+    from flask_sqlalchemy import BaseQuery
+    from sqlalchemy_utils import TSVectorType
+    from sqlalchemy_searchable import SearchQueryMixin, make_searchable
+
+    make_searchable()
+
+
+    class WordQuery(BaseQuery, SearchQueryMixin):
+        pass
 
 
 class User(UserMixin, db.Model):
@@ -31,6 +47,12 @@ class Dictionary(db.Model):
 
 class Word(db.Model):
     # General
+    if ENABLE_SEARCH:
+        query_class = WordQuery
+        search_vector = db.Column(TSVectorType("singular", "plural", "infinitive", "past_tense",
+                                               "present_perfect_tense", "positive", "comparative", "superlative",
+                                               "adverb", "conjunction", "preposition", "meaning", "examples"))
+
     id = db.Column(db.Integer, primary_key=True)
     form = WordForm
     meaning = db.Column(db.String())
