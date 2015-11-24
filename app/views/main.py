@@ -5,6 +5,7 @@ from sqlalchemy_utils import get_class_by_table
 from app import db
 from app.models import Word
 from app.utils import get_or_create
+from app.forms import SearchForm
 
 main = Blueprint("main", __name__)
 
@@ -70,6 +71,22 @@ def delete_word(id):
     return redirect(url_for("main.index"))
 
 
+@main.route("/search", methods=["POST"])
+@login_required
+def search():
+    if not g.search_form.validate_on_submit():
+        return redirect(url_for("main.index"))
+    return redirect(url_for("main.search_results", query=g.search_form.search_field.data))
+
+
+@main.route("/search_results/<query>")
+@main.route("/search_results/<query>/<int:page>")
+@login_required
+def search_results(query, page=1):
+    words = None
+    return render_template("search_results.html", title="Search Results", query=query, words=words)
+
+
 @main.route("/login")
 def login():
     if g.user.is_authenticated:
@@ -89,3 +106,4 @@ def logout():
 def before_request():
     g.user = current_user
     g.word_classes = [word_class.__mapper_args__["polymorphic_identity"] for word_class in Word.__subclasses__()]
+    g.search_form = SearchForm()

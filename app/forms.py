@@ -68,3 +68,7 @@ class PrepositionForm(WordForm):
 
 WordForm.meaning = TextAreaField("Meaning", [DataRequired()])
 WordForm.examples = TextAreaField("Examples", [DataRequired()])
+
+
+class SearchForm(Form):
+    search_field = StringField("Search")
