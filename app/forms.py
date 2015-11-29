@@ -72,7 +72,7 @@ class PrepositionForm(WordForm):
 
 
 WordForm.meaning = TextAreaField('Meaning', [DataRequired()])
-WordForm.examples = TextAreaField('Examples', [DataRequired()])
+WordForm.examples = TextAreaField('Examples')
 
 
 class SearchForm(Form):
