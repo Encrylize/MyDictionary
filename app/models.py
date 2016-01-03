@@ -27,8 +27,7 @@ class User(UserMixin, db.Model):
         self.dictionary = Dictionary(creator=self)
 
     def __repr__(self):
-        return '<User ID: %r, social_id: %r, name: %r>' % (
-            self.id, self.social_id, self.name)
+        return '<User %d>' % self.id
 
 
 class Dictionary(db.Model):
