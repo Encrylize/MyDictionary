@@ -107,6 +107,10 @@ class Word(db.Model):
     def footer(self):
         return self.examples
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<%s %d>' % (self.type.capitalize(), self.id)
 

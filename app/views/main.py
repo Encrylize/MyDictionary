@@ -35,8 +35,7 @@ def create_word(word_class):
                                          for key, value in form.data.items()
                                          if key != 'next'})
         if created:
-            db.session.add(word)
-            db.session.commit()
+            word.save()
             flash('Successfully created word!', 'success')
             return redirect(url_for('main.index'))
         else:
@@ -60,7 +59,7 @@ def edit_word(id):
                                              if key != 'next'}).first()
         if new_word is None:
             form.populate_obj(word)
-            db.session.commit()
+            word.save()
             flash('Successfully edited word!', 'success')
             return form.redirect('index')
         else:
