@@ -9,15 +9,14 @@ from app.models import User
 from app.utils import get_or_create
 
 oauth = Blueprint('oauth', __name__)
-facebook = oa.remote_app(
-    'facebook',
-    base_url='https://graph.facebook.com/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://facebook.com/dialog/oauth',
-    consumer_key=os.getenv('MYDICTIONARY_FACEBOOK_APP_ID'),
-    consumer_secret=os.getenv('MYDICTIONARY_FACEBOOK_APP_SECRET'),
-    request_token_params={'scope': 'email'})
+facebook = oa.remote_app('facebook',
+                         base_url='https://graph.facebook.com/',
+                         request_token_url=None,
+                         access_token_url='/oauth/access_token',
+                         authorize_url='https://facebook.com/dialog/oauth',
+                         consumer_key=os.getenv('MYDICTIONARY_FACEBOOK_APP_ID'),
+                         consumer_secret=os.getenv('MYDICTIONARY_FACEBOOK_APP_SECRET'),
+                         request_token_params={'scope': 'email'})
 
 
 @facebook.tokengetter
@@ -34,9 +33,8 @@ def authorize():
 def callback():
     resp = facebook.authorized_response()
     if resp is None:
-        flash('Access denied: Reason: %s, error: %s' %
-              (request.args['error_reason'],
-               request.args['error_description']), 'error')
+        flash('Access denied: Reason: %s, error: %s' % (request.args['error_reason'],
+                                                        request.args['error_description']), 'error')
     elif isinstance(resp, OAuthException):
         flash('Access denied: %s' % resp.message, 'error')
 

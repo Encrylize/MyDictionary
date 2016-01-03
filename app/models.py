@@ -6,8 +6,8 @@ from sqlalchemy_searchable import SearchQueryMixin, make_searchable
 from sqlalchemy_utils import TSVectorType
 
 from app import db
-from app.forms import (AdjectiveForm, AdverbForm, ConjunctionForm, NounForm,
-                       PrepositionForm, VerbForm, WordForm)
+from app.forms import (AdjectiveForm, AdverbForm, ConjunctionForm, NounForm, PrepositionForm, VerbForm,
+                       WordForm)
 
 make_searchable()
 
@@ -16,10 +16,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     social_id = db.Column(db.String(), nullable=False, unique=True)
     name = db.Column(db.String(), nullable=False)
-    dictionary = db.relationship('Dictionary',
-                                 uselist=False,
-                                 backref='creator',
-                                 cascade='all, delete-orphan')
+    dictionary = db.relationship('Dictionary', uselist=False, backref='creator', cascade='all, delete-orphan')
 
     def __init__(self, **kwargs):
         """ Initializes the user and creates their dictionary. """
@@ -33,10 +30,7 @@ class User(UserMixin, db.Model):
 class Dictionary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    words = db.relationship('Word',
-                            lazy='dynamic',
-                            backref='dictionary',
-                            cascade='all, delete-orphan')
+    words = db.relationship('Word', lazy='dynamic', backref='dictionary', cascade='all, delete-orphan')
 
     def __repr__(self):
         return '<Dictionary %d>' % self.id
@@ -49,10 +43,9 @@ class WordQuery(BaseQuery, SearchQueryMixin):
 class Word(db.Model):
     # General
     query_class = WordQuery
-    search_vector = db.Column(TSVectorType(
-        'singular', 'plural', 'infinitive', 'past_tense',
-        'present_perfect_tense', 'positive', 'comparative', 'superlative',
-        'adverb', 'conjunction', 'preposition', 'meaning', 'examples'))
+    search_vector = db.Column(TSVectorType('singular', 'plural', 'infinitive', 'past_tense',
+                                           'present_perfect_tense', 'positive', 'comparative', 'superlative',
+                                           'adverb', 'conjunction', 'preposition', 'meaning', 'examples'))
 
     id = db.Column(db.Integer, primary_key=True)
     form = WordForm
@@ -129,12 +122,7 @@ class Noun(Word):
 
     @property
     def body(self):
-        return OrderedDict(
-            (
-                ('Singular', self.singular),
-                ('Plural', self.plural)
-            )
-        )
+        return OrderedDict((('Singular', self.singular), ('Plural', self.plural)))
 
 
 class Verb(Word):
@@ -149,18 +137,12 @@ class Verb(Word):
     @property
     def subheader(self):
         return '%s, consonant change in 2nd/3rd person, singular. %s' % (
-            self.type, self.meaning) if self.consonant_change else '%s. %s' % (
-                self.type, self.meaning)
+            self.type, self.meaning) if self.consonant_change else '%s. %s' % (self.type, self.meaning)
 
     @property
     def body(self):
-        return OrderedDict(
-            (
-                ('Infinitive', self.infinitive),
-                ('Past tense', self.past_tense),
-                ('Present perfect tense', self.present_perfect_tense)
-            )
-        )
+        return OrderedDict((('Infinitive', self.infinitive), ('Past tense', self.past_tense), (
+            'Present perfect tense', self.present_perfect_tense)))
 
 
 class Adjective(Word):
@@ -174,13 +156,8 @@ class Adjective(Word):
 
     @property
     def body(self):
-        return OrderedDict(
-            (
-                ('Positive', self.positive),
-                ('Comparative', self.comparative),
-                ('Superlative', self.superlative)
-            )
-        )
+        return OrderedDict((('Positive', self.positive), ('Comparative', self.comparative), (
+            'Superlative', self.superlative)))
 
 
 class Adverb(Word):

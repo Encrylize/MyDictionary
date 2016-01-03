@@ -1,7 +1,6 @@
 from flask import redirect, url_for
 from flask_wtf import Form
-from wtforms import (BooleanField, HiddenField, SelectField, StringField,
-                     TextAreaField)
+from wtforms import (BooleanField, HiddenField, SelectField, StringField, TextAreaField)
 from wtforms.validators import DataRequired
 
 from app.utils import get_redirect_target, is_safe_url
@@ -38,16 +37,14 @@ class WordForm(RedirectForm):
 class NounForm(WordForm):
     singular = StringField('Singular', [DataRequired()])
     plural = StringField('Plural', [DataRequired()])
-    gender = SelectField('Gender', choices=[('neuter', 'neuter'),
-                                            ('feminine', 'feminine'),
-                                            ('masculine', 'masculine')])
+    gender = SelectField('Gender',
+                         choices=[('neuter', 'neuter'), ('feminine', 'feminine'), ('masculine', 'masculine')])
 
 
 class VerbForm(WordForm):
     infinitive = StringField('Infinitive', [DataRequired()])
     past_tense = StringField('Past Tense', [DataRequired()])
-    present_perfect_tense = StringField('Present Perfect Tense',
-                                        [DataRequired()])
+    present_perfect_tense = StringField('Present Perfect Tense', [DataRequired()])
     consonant_change = BooleanField('Consonant Change - 2./3. pers. sgl.')
 
 

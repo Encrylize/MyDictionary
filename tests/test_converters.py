@@ -23,5 +23,4 @@ class TestUtils(unittest.TestCase):
         word_class_converter = WordClassConverter(None)
         self.assertEquals(word_class_converter.to_python('noun'), Noun)
         self.assertEquals(word_class_converter.to_python('verb'), Verb)
-        self.assertRaises(ValidationError, word_class_converter.to_python,
-                          'invalid_word_class')
+        self.assertRaises(ValidationError, word_class_converter.to_python, 'invalid_word_class')

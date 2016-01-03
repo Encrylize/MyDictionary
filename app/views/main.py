@@ -1,5 +1,4 @@
-from flask import (Blueprint, abort, current_app, flash, g, redirect,
-                   render_template, url_for)
+from flask import (Blueprint, abort, current_app, flash, g, redirect, render_template, url_for)
 from flask_login import current_user, login_required, logout_user
 from sqlalchemy_utils import get_class_by_table
 
@@ -16,8 +15,7 @@ main = Blueprint('main', __name__)
 @main.route('/index/<int:page>')
 @login_required
 def index(page=1):
-    words = g.user.dictionary.words.paginate(
-        page, current_app.config.get('WORDS_PER_PAGE'), False)
+    words = g.user.dictionary.words.paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
     if not words.items and page != 1:
         abort(404)
 
@@ -31,9 +29,7 @@ def create_word(word_class):
 
     if form.validate_on_submit():
         word, created = get_or_create(word_class, dictionary=g.user.dictionary,
-                                      **{key: value
-                                         for key, value in form.data.items()
-                                         if key != 'next'})
+                                      **{key: value for key, value in form.data.items() if key != 'next'})
         if created:
             word.save()
             flash('Successfully created word!', 'success')
@@ -47,16 +43,15 @@ def create_word(word_class):
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_word(id):
-    word = Word.query.filter_by(id=id,
-                                dictionary=g.user.dictionary).first_or_404()
+    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
     form = word.form(obj=word)
 
     if form.validate_on_submit():
-        new_word = get_class_by_table(Word, Word.__table__,
+        new_word = get_class_by_table(Word,
+                                      Word.__table__,
                                       data={'type': word.type}).query.filter_by(
                                           **{key: value
-                                             for key, value in form.data.items()
-                                             if key != 'next'}).first()
+                                             for key, value in form.data.items() if key != 'next'}).first()
         if new_word is None:
             form.populate_obj(word)
             word.save()
@@ -71,8 +66,7 @@ def edit_word(id):
 @main.route('/delete/<int:id>')
 @login_required
 def delete_word(id):
-    word = Word.query.filter_by(id=id,
-                                dictionary=g.user.dictionary).first_or_404()
+    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
     db.session.delete(word)
     db.session.commit()
     flash('Deleted word.', 'warning')
@@ -85,20 +79,15 @@ def delete_word(id):
 def search():
     if not g.search_form.validate_on_submit():
         return redirect(url_for('main.index'))
-    return redirect(url_for('main.search_results',
-                            query=g.search_form.search_field.data))
+    return redirect(url_for('main.search_results', query=g.search_form.search_field.data))
 
 
 @main.route('/search_results/<query>')
 @main.route('/search_results/<query>/<int:page>')
 @login_required
 def search_results(query, page=1):
-    words = Word.query.search(query).paginate(
-        page, current_app.config.get('WORDS_PER_PAGE'), False)
-    return render_template('search_results.html',
-                           title='Search Results',
-                           query=query,
-                           words=words)
+    words = Word.query.search(query).paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
+    return render_template('search_results.html', title='Search Results', query=query, words=words)
 
 
 @main.route('/login')
