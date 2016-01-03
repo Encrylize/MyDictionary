@@ -15,7 +15,7 @@ main = Blueprint('main', __name__)
 @main.route('/index/<int:page>')
 @login_required
 def index(page=1):
-    words = g.user.dictionary.words.paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
+    words = current_user.dictionary.words.paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
     if not words.items and page != 1:
         abort(404)
 
@@ -43,7 +43,7 @@ def create_word(word_class):
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_word(id):
-    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
+    word = Word.query.filter_by(id=id, dictionary=current_user.dictionary).first_or_404()
     form = word.form(obj=word)
 
     if form.validate_on_submit():
@@ -66,7 +66,7 @@ def edit_word(id):
 @main.route('/delete/<int:id>')
 @login_required
 def delete_word(id):
-    word = Word.query.filter_by(id=id, dictionary=g.user.dictionary).first_or_404()
+    word = Word.query.filter_by(id=id, dictionary=current_user.dictionary).first_or_404()
     db.session.delete(word)
     db.session.commit()
     flash('Deleted word.', 'warning')
@@ -92,7 +92,7 @@ def search_results(query, page=1):
 
 @main.route('/login')
 def login():
-    if g.user.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
     return render_template('login.html', title='Log In')
@@ -107,7 +107,6 @@ def logout():
 
 @main.before_request
 def before_request():
-    g.user = current_user
     g.search_form = SearchForm()
 
 

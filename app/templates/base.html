@@ -13,7 +13,7 @@
     <link href="{{ url_for('static', filename='css/stylesheet.css') }}" rel="stylesheet">
   </head>
   <body>
-    {% if g.user.is_authenticated %}
+    {% if current_user.is_authenticated %}
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -30,7 +30,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ g.user.name }}<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.name }}<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{{ url_for('main.logout') }}">Log Out</a></li>
                 </ul>
