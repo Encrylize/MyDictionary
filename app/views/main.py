@@ -108,6 +108,11 @@ def logout():
 @main.before_request
 def before_request():
     g.user = current_user
-    g.word_classes = [word_class.__mapper_args__['polymorphic_identity']
-                      for word_class in Word.__subclasses__()]
     g.search_form = SearchForm()
+
+
+@main.context_processor
+def inject_word_classes():
+    return {'word_classes': [word_class.__mapper_args__['polymorphic_identity']
+                             for word_class in Word.__subclasses__()]}
+
