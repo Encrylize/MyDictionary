@@ -40,7 +40,7 @@ class Dictionary(db.Model):
                             cascade='all, delete-orphan')
 
     def __repr__(self):
-        return '<Dictionary ID: %d, user_id: %d>' % (self.id, self.user_id)
+        return '<Dictionary %d>' % self.id
 
 
 class WordQuery(BaseQuery, SearchQueryMixin):
@@ -108,9 +108,7 @@ class Word(db.Model):
         return self.examples
 
     def __repr__(self):
-        return '<%s>' % ''.join(['%s: %s, ' % (column, getattr(self, column))
-                                 for column in self.__table__.columns._data
-                                 if getattr(self, column) is not None])[:-2]
+        return '<%s %d>' % (self.type.capitalize(), self.id)
 
 
 class Noun(Word):
