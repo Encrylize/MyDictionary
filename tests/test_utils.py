@@ -1,22 +1,10 @@
-import unittest
-
-from app import create_app, db
+from app import db
 from app.models import User
 from app.utils import get_or_create, get_redirect_target, is_safe_url
+from tests.general import AppTestCase
 
 
-class TestUtils(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app('testing')
-        self.app_ctx = self.app.app_context()
-        self.app_ctx.push()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_ctx.pop()
-
+class TestUtils(AppTestCase):
     def test_get_or_create(self):
         user1, created1 = get_or_create(User, name='foo', social_id='bar')
         db.session.add(user1)

@@ -1,24 +1,11 @@
-import unittest
-
 from werkzeug.routing import ValidationError
 
-from app import create_app, db
 from app.converters import WordClassConverter
 from app.models import Noun, Verb
+from tests.general import AppTestCase
 
 
-class TestConverters(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app('testing')
-        self.app_ctx = self.app.app_context()
-        self.app_ctx.push()
-        db.create_all()
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        self.app_ctx.pop()
-
+class TestConverters(AppTestCase):
     def test_word_class_converter(self):
         word_class_converter = WordClassConverter(None)
         self.assertEquals(word_class_converter.to_python('noun'), Noun)
