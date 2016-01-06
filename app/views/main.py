@@ -1,4 +1,4 @@
-from flask import (Blueprint, abort, current_app, flash, g, redirect, render_template, url_for)
+from flask import (Blueprint, current_app, flash, g, redirect, render_template, url_for)
 from flask_login import current_user, login_required, logout_user
 from sqlalchemy_utils import get_class_by_table
 
@@ -15,10 +15,7 @@ main = Blueprint('main', __name__)
 @main.route('/index/<int:page>')
 @login_required
 def index(page=1):
-    words = current_user.dictionary.words.paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
-    if not words.items and page != 1:
-        abort(404)
-
+    words = current_user.dictionary.words.paginate(page, current_app.config.get('WORDS_PER_PAGE'))
     return render_template('index.html', title='Home', words=words)
 
 
@@ -86,7 +83,7 @@ def search():
 @main.route('/search_results/<query>/<int:page>')
 @login_required
 def search_results(query, page=1):
-    words = Word.query.search(query).paginate(page, current_app.config.get('WORDS_PER_PAGE'), False)
+    words = Word.query.search(query).paginate(page, current_app.config.get('WORDS_PER_PAGE'))
     return render_template('search_results.html', title='Search Results', query=query, words=words)
 
 
