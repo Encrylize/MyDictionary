@@ -28,7 +28,7 @@ def create_word(word_class):
     form = word_class.form()
 
     if form.validate_on_submit():
-        word, created = get_or_create(word_class, dictionary=g.user.dictionary,
+        word, created = get_or_create(word_class, dictionary=current_user.dictionary,
                                       **{key: value for key, value in form.data.items() if key != 'next'})
         if created:
             word.save()
