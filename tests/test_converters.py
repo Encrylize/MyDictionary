@@ -7,7 +7,7 @@ from app.converters import WordClassConverter
 from app.models import Noun, Verb
 
 
-class TestUtils(unittest.TestCase):
+class TestConverters(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.app_ctx = self.app.app_context()
