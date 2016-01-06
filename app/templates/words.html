@@ -1,0 +1,31 @@
+{% for word in words.items %}
+  <div class="jumbotron">
+    <h2>{{ word.header }}</h2>
+    <h4 class="word-subheader">{{ word.subheader }}</h4>
+
+    {% for property, value in word.body.items() %}
+      <h4>{{ property }}: <b>{{ value }}</b></h4>
+    {% endfor %}
+
+    <br>
+    <h4><em>{{ word.footer }}</em></h4>
+    <a class="btn btn-primary pull-right col-xs-offset-1" href="{{ url_for('main.edit_word', id=word.id) }}">Edit <span class="glyphicon glyphicon-pencil"></span></a>
+    <a class="btn btn-danger pull-right" onclick="return confirm('Are you sure you want to delete this word?')" href="{{ url_for('main.delete_word', id=word.id) }}">Delete <span class="glyphicon glyphicon-trash"></span></a>
+  </div>
+{% endfor %}
+
+<div class="pull-left">
+  {% if words.has_prev %}
+    <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=words.prev_num) }}"><< Previous</a>
+  {% else %}
+    <a class="btn btn-default paginate-btn"><< Previous</a>
+  {% endif %}
+</div>
+
+<div class="pull-right">
+  {% if words.has_next %}
+    <a class="btn btn-primary paginate-btn" href="{{ url_for(request.endpoint, page=words.next_num) }}">Next >></a>
+  {% else %}
+    <a class="btn btn-default paginate-btn">Next >></a>
+  {% endif %}
+</div>

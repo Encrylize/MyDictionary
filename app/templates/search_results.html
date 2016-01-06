@@ -3,5 +3,5 @@
 
 {% block content %}
 <h3>Showing search results for "{{ query }}":</h3>
-{{ render_words(words) }}
+{% include "words.html" %}
 {% endblock %}
